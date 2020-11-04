@@ -1,7 +1,7 @@
 {
   "name": "covid-19",
   "version": "0.1.0",
-  "homepage": "https://smk2018.github.io/Covid19_Tracker_new",
+  "homepage": "https://smk2018.github.io/Covid19_Tracker",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
