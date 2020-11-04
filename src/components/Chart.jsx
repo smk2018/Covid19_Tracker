@@ -1,30 +1,82 @@
 import React, { Component } from "react";
-import { Pie } from "react-chartjs-2";
+import { Pie, Doughnut } from "react-chartjs-2"; 
 
 class Chart extends Component {
+
   render() {
     const { countries } = this.props;
 
     if (countries.length === 0) return <div></div>;
 
-    const data = {
-      labels: countries.map((country) => country.name), //[]strings
+    const data_total = {
+      labels: countries.map((country) => country.name),//[]strings
       datasets: [
         {
           data: countries.map((country) => country.total),
           backgroundColor: colors,
-        },
-      ],
+        }
+      ]
+    };
+
+    const data_death = {
+      labels: countries.map((country) => country.name), //[]strings
+      datasets: [
+        {
+          data: countries.map((country) => country.death),
+          backgroundColor: colors,
+        }
+      ]
+    };
+
+    const data_recover = {
+      labels: countries.map((country) => country.name), //[]strings
+      datasets: [
+        {
+          data: countries.map((country) => country.recover),
+          backgroundColor: colors,
+        }
+      ]
+    };
+
+    const data_active = {
+      labels: countries.map((country) => country.name), //[]strings
+      datasets: [
+        {
+          data: countries.map((country) => country.active),
+          backgroundColor: colors,
+        }
+      ]
     };
 
     return (
       <div>
         <Pie
-          data={data}
-          width={100}
-          height={200}
+          data={data_total}
+          width={20}
+          height={40}
           options={{ maintainAspectRatio: false }}
         ></Pie>
+
+        <Doughnut
+          data={data_death}
+          width={20}
+          height={40}
+          options={{ maintainAspectRatio: false }}
+        ></Doughnut>
+
+        <Doughnut
+          data={data_recover}
+          width={20}
+          height={40}
+          options={{ maintainAspectRatio: false }}
+        ></Doughnut>
+
+        <Doughnut
+          data={data_active}
+          width={20}
+          height={40}
+          options={{ maintainAspectRatio: false }}
+        ></Doughnut>
       </div>
     );
   }

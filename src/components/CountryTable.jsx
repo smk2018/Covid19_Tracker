@@ -5,6 +5,9 @@ class CountryTable extends Component {
     const {
       countries,
       onSortByTotal,
+      onSortByDeath,
+      onSortByRecovered,
+      onSortByActive,
       onSortByCountryName,
       onRowSelected,
     } = this.props;
@@ -19,7 +22,22 @@ class CountryTable extends Component {
             </th>
             <th>
               <a href="/" onClick={onSortByTotal}>
-                Total
+                Confirmed
+              </a>
+            </th>
+            <th>
+              <a href="/" onClick={onSortByDeath}>
+                Death
+              </a>
+            </th>
+            <th>
+              <a href="/" onClick={onSortByRecovered}>
+                Recovered
+              </a>
+            </th>
+            <th>
+              <a href="/" onClick={onSortByActive}>
+                Active
               </a>
             </th>
           </tr>
@@ -37,6 +55,9 @@ class CountryTable extends Component {
               >
                 <td>{country.name}</td>
                 <td>{country.total}</td>
+                <td>{country.death}</td>
+                <td>{country.recover}</td>
+                <td>{country.active}</td>
               </tr>
             );
           })}

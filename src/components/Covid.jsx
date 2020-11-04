@@ -10,6 +10,9 @@ class Covid extends Component {
     countries: [],
     filterText: "",
     allCountryTotal: 0,
+    allCountryDeath: 0,
+    allCountryRecovered: 0,
+    allCountryActive: 0,
     selectedCountries: [],
   };
 
@@ -22,21 +25,33 @@ class Covid extends Component {
 
     const countries = [];
     let allCountryTotal = 0;
+    let allCountryDeath = 0;
+    let allCountryRecovered = 0;
+    let allCountryActive = 0;
 
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); //splitting on ,
       const countryName = row[0].replace(/"/g, "");
       const total = Number(row[4]);
+      const death = Number(row[5]);
+      const recover = Number(row[6]);
+      const active = Number(row[7]);
       if (countryName !== "") {
         countries.push({
           name: countryName,
           total: total,
+          death: death,
+          recover: recover,
+          active: active,
         });
         allCountryTotal += total;
+        allCountryDeath += death;
+        allCountryRecovered += recover;
+        allCountryActive += active;
       }
     }
-    
-    this.setState({ countries, allCountryTotal });
+
+    this.setState({ countries, allCountryTotal, allCountryDeath, allCountryRecovered, allCountryActive });
   }
 
   handleOnRowSelected = (countryToUpdate) => {
@@ -49,6 +64,9 @@ class Covid extends Component {
     const country = {
       name: countryToUpdate.name,
       total: countryToUpdate.total,
+      death: countryToUpdate.death,
+      recover: countryToUpdate.recover,
+      active: countryToUpdate.active,
       selected: !countryToUpdate.selected,
     };
 
@@ -71,6 +89,45 @@ class Covid extends Component {
 
   handleOnSortByTotal = (event) => {
     this.handleOnSortBy(event, this.sortByTotal);
+  };
+
+  sortByDeath = (countryA, countryB) => {
+    // 0 equal
+    // 1 greater
+    // -1 less
+    if (countryB.death > countryA.death) return 1;
+    else if (countryB.death < countryA.death) return -1;
+    else return 0;
+  };
+
+  handleOnSortByDeath = (event) => {
+    this.handleOnSortBy(event, this.sortByDeath);
+  };
+
+  sortByRecovered = (countryA, countryB) => {
+    // 0 equal
+    // 1 greater
+    // -1 less
+    if (countryB.recover > countryA.recover) return 1;
+    else if (countryB.recover < countryA.recover) return -1;
+    else return 0;
+  };
+
+  handleOnSortByRecovered = (event) => {
+    this.handleOnSortBy(event, this.sortByRecovered);
+  };
+
+  sortByActive = (countryA, countryB) => {
+    // 0 equal
+    // 1 greater
+    // -1 less
+    if (countryB.active > countryA.active) return 1;
+    else if (countryB.active < countryA.active) return -1;
+    else return 0;
+  };
+
+  handleOnSortByActive = (event) => {
+    this.handleOnSortBy(event, this.sortByActive);
   };
 
   sortByCountryName = (countryA, countryB) => {
@@ -106,14 +163,26 @@ class Covid extends Component {
     const {
       countries,
       allCountryTotal,
+      allCountryDeath,
+      allCountryRecovered,
+      allCountryActive,
       selectedCountries,
       filterText,
     } = this.state;
     return (
       <div>
-        <h1 style={{ textAlign: "center" }}>
-          All Country Total: {this.numberWithCommas(allCountryTotal)}
-        </h1>
+        <h2 style={{ textAlign: "left" }}>
+          All Country Confirmed: {this.numberWithCommas(allCountryTotal)}
+        </h2>
+        <h2 style={{ textAlign: "left" }}>
+          All Country Death: {this.numberWithCommas(allCountryDeath)}
+        </h2>
+        <h2 style={{ textAlign: "left" }}>
+          All Country Recovered: {this.numberWithCommas(allCountryRecovered)}
+        </h2>
+        <h2 style={{ textAlign: "left" }}>
+          All Country Active: {this.numberWithCommas(allCountryActive)}
+        </h2>
         {allCountryTotal === 0 ? (
           <Loading />
         ) : (
@@ -148,6 +217,9 @@ class Covid extends Component {
                 );
               })}
               onSortByTotal={this.handleOnSortByTotal}
+              onSortByDeath={this.handleOnSortByDeath}
+              onSortByRecovered={this.handleOnSortByRecovered}
+              onSortByActive={this.handleOnSortByActive}
               onSortByCountryName={this.handleOnSortByCountryName}
               onRowSelected={this.handleOnRowSelected}
             />
